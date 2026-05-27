@@ -51,11 +51,11 @@ const CLUB_LOGO_IDS: Record<string, string> = {
 };
 
 export const ClubBadge: React.FC<ClubBadgeProps> = ({ clubId, className = "", size = 48 }) => {
-  const [useFallback, setUseFallback] = useState(false);
+  const [logoState, setLogoState] = useState<"default" | "dark" | "fallback">("default");
 
-  // Reset fallback state when clubId changes
+  // Reset logo state when clubId changes
   useEffect(() => {
-    setUseFallback(false);
+    setLogoState("default");
   }, [clubId]);
 
   const logoId = CLUB_LOGO_IDS[clubId];
@@ -226,8 +226,19 @@ export const ClubBadge: React.FC<ClubBadgeProps> = ({ clubId, className = "", si
     }
   };
 
-  if (logoId && !useFallback) {
-    const imageUrl = `https://a.espncdn.com/i/teamlogos/soccer/500/${logoId}.png`;
+  if (logoId && logoState !== "fallback") {
+    const imageUrl = logoState === "default"
+      ? `https://a.espncdn.com/i/teamlogos/soccer/500/${logoId}.png`
+      : `https://a.espncdn.com/i/teamlogos/soccer/500-dark/${logoId}.png`;
+
+    const handleImageError = () => {
+      if (logoState === "default") {
+        setLogoState("dark");
+      } else {
+        setLogoState("fallback");
+      }
+    };
+
     return (
       <div 
         className={`inline-block ${className}`} 
@@ -238,7 +249,7 @@ export const ClubBadge: React.FC<ClubBadgeProps> = ({ clubId, className = "", si
           src={imageUrl}
           alt={`Logo ${clubId}`}
           className="w-full h-full object-contain"
-          onError={() => setUseFallback(true)}
+          onError={handleImageError}
         />
       </div>
     );
