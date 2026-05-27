@@ -3,22 +3,46 @@ import { Club } from "../mocks/clubs";
 
 // Map local club IDs to ESPN numeric IDs
 export const CLUB_ESPN_IDS: Record<string, string> = {
-  cap: "3458", // Athletico-PR
-  bot: "6086", // Botafogo
-  cam: "7632", // Atlético-MG
-  cor: "874",  // Corinthians
-  cru: "2022", // Cruzeiro
-  flu: "3445", // Fluminense
-  fla: "819",  // Flamengo
-  gre: "6273", // Grêmio
-  int: "1936", // Internacional
-  pal: "2029", // Palmeiras
-  sao: "2026", // São Paulo
-  san: "2674", // Santos
-  vas: "3454", // Vasco da Gama
-  cfc: "3456", // Coritiba
-  bah: "9967", // Bahia
-  for: "6272"  // Fortaleza
+  cap: "3458",
+  cam: "7632",
+  bah: "9967",
+  bot: "6086",
+  cha: "9318",
+  cor: "874",
+  cfc: "3456",
+  cru: "2022",
+  fla: "819",
+  flu: "3445",
+  gre: "6273",
+  int: "1936",
+  mir: "9169",
+  pal: "2029",
+  bra: "6079",
+  rem: "4936",
+  san: "2674",
+  sao: "2026",
+  vas: "3454",
+  vit: "3457",
+  amg: "6154",
+  ath: "20851",
+  ago: "10357",
+  ava: "9966",
+  bfc: "10281",
+  crb: "9970",
+  cea: "9969",
+  cri: "9971",
+  cui: "17313",
+  for: "6272",
+  goi: "3395",
+  juv: "6270",
+  lon: "17333",
+  nov: "18127",
+  nau: "7633",
+  ope: "18187",
+  pon: "3459",
+  spo: "7635",
+  ber: "11268",
+  vil: "9973",
 };
 
 // Reverse lookup to find local clubId from ESPN ID
