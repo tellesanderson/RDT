@@ -9,7 +9,15 @@ import { MatchSummaryCard } from "../components/MatchSummaryCard";
 import { WhereToWatchBadge } from "../components/WhereToWatchBadge";
 import { FanRatings } from "../components/FanRatings";
 import { ClubBadge } from "../components/ClubBadge";
-import { Settings, ShieldAlert, Award, MessageSquareText, Radio, Info, ChevronRight, Heart } from "lucide-react";
+import { fetchLiveMatchData } from "../lib/espnApi";
+import { Settings, ShieldAlert, Award, MessageSquareText, Radio, Info, Heart, RefreshCw } from "lucide-react";
+
+interface NextMatchState {
+  str: string;
+  iso: string;
+  opponentId: string;
+  channels: string[];
+}
 
 export default function Home() {
   const [selectedClub, setSelectedClub] = useState<Club | null>(null);
@@ -17,6 +25,10 @@ export default function Home() {
   const [matchData, setMatchData] = useState<MatchData | null>(null);
   const [activeTab, setActiveTab] = useState<"resumo" | "corneta">("resumo");
   const [isClient, setIsClient] = useState(false);
+  
+  // Live API States
+  const [loadingLive, setLoadingLive] = useState(false);
+  const [nextMatchOverride, setNextMatchOverride] = useState<NextMatchState | null>(null);
 
   // Mark client hydration complete
   useEffect(() => {
@@ -27,8 +39,8 @@ export default function Home() {
       if (club) {
         setSelectedClub(club);
         setShowClubSelector(false);
-        setMatchData(getMatchDataForClub(club.id));
         applyTheme(club);
+        loadLiveClubData(club);
       }
     }
   }, []);
@@ -42,15 +54,45 @@ export default function Home() {
     root.style.setProperty("--club-accent-glow", `${club.accentColor}26`);
   };
 
+  const loadLiveClubData = async (club: Club) => {
+    // 1. Set initial mock data immediately so there's no blank screen
+    setMatchData(getMatchDataForClub(club.id));
+    setNextMatchOverride(null);
+    
+    // 2. Fetch live data
+    setLoadingLive(true);
+    try {
+      const live = await fetchLiveMatchData(club);
+      if (live && live.matchData) {
+        setMatchData(live.matchData);
+        if (live.nextMatch) {
+          setNextMatchOverride({
+            str: live.nextMatch.matchDateStr,
+            iso: live.nextMatch.dateISO,
+            opponentId: live.nextMatch.opponentId,
+            channels: live.nextMatch.channels
+          });
+        }
+      }
+    } catch (e) {
+      console.error("CORS or network error fetching ESPN data, keeping mock data:", e);
+    } finally {
+      setLoadingLive(false);
+    }
+  };
+
   const handleSelectClub = (club: Club) => {
     setSelectedClub(club);
     localStorage.setItem("favorite_club_id", club.id);
-    setMatchData(getMatchDataForClub(club.id));
     applyTheme(club);
     setShowClubSelector(false);
+    loadLiveClubData(club);
   };
 
   const getOpponentClub = (): Club => {
+    if (nextMatchOverride) {
+      return getClubById(nextMatchOverride.opponentId) || CLUBS[0];
+    }
     if (!selectedClub || !matchData) return CLUBS[0];
     const opponentShort = matchData.teams.home.short_name === selectedClub.shortName
       ? matchData.teams.away.short_name
@@ -67,7 +109,7 @@ export default function Home() {
     );
   }
 
-  // Next Saturday 16:00
+  // Fallback next match date (Next Saturday 16:00)
   const getNextMatchDate = () => {
     const today = new Date();
     const nextSaturday = new Date(today);
@@ -106,13 +148,18 @@ export default function Home() {
                 size={26} 
                 className="transform group-hover:scale-105 transition-transform duration-300 filter drop-shadow-sm" 
               />
-              <div className="text-left">
-                <h2 className="text-xs font-black text-white tracking-wide leading-none group-hover:text-club-accent transition-colors">
-                  {selectedClub.name}
-                </h2>
-                <span className="text-[8px] text-slate-500 font-bold uppercase tracking-wider block mt-0.5">
-                  Time do Coração
-                </span>
+              <div className="text-left flex items-center">
+                <div>
+                  <h2 className="text-xs font-black text-white tracking-wide leading-none group-hover:text-club-accent transition-colors flex items-center gap-1">
+                    {selectedClub.name}
+                    {loadingLive && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse inline-block" title="Sincronizando dados oficiais do Brasileirão..." />
+                    )}
+                  </h2>
+                  <span className="text-[8px] text-slate-500 font-bold uppercase tracking-wider block mt-0.5">
+                    Time do Coração
+                  </span>
+                </div>
               </div>
             </div>
           ) : (
@@ -131,14 +178,24 @@ export default function Home() {
         </div>
 
         {selectedClub && (
-          <button
-            onClick={() => setShowClubSelector(true)}
-            className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-950 border border-white/5 hover:bg-slate-900 transition-colors text-[10px] font-black text-slate-400 hover:text-white uppercase tracking-wider cursor-pointer"
-            title="Alterar time do coração"
-          >
-            <Heart size={12} className="text-rose-500 fill-rose-500/20" />
-            <span>Trocar Time</span>
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => loadLiveClubData(selectedClub)}
+              disabled={loadingLive}
+              className="p-2 rounded-xl bg-slate-950 border border-white/5 hover:bg-slate-900 text-slate-400 hover:text-white cursor-pointer disabled:opacity-50"
+              title="Atualizar dados reais"
+            >
+              <RefreshCw size={12} className={loadingLive ? "animate-spin" : ""} />
+            </button>
+            <button
+              onClick={() => setShowClubSelector(true)}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-950 border border-white/5 hover:bg-slate-900 transition-colors text-[10px] font-black text-slate-400 hover:text-white uppercase tracking-wider cursor-pointer"
+              title="Alterar time do coração"
+            >
+              <Heart size={12} className="text-rose-500 fill-rose-500/20" />
+              <span>Trocar Time</span>
+            </button>
+          </div>
         )}
       </header>
 
@@ -186,9 +243,9 @@ export default function Home() {
                 <WhereToWatchBadge
                   currentClub={selectedClub}
                   opponent={getOpponentClub()}
-                  matchDateStr={nextMatch.str}
-                  dateISO={nextMatch.iso}
-                  channels={matchData.onde_assistir.map(c => c.platform_name)}
+                  matchDateStr={nextMatchOverride ? nextMatchOverride.str : nextMatch.str}
+                  dateISO={nextMatchOverride ? nextMatchOverride.iso : nextMatch.iso}
+                  channels={nextMatchOverride ? nextMatchOverride.channels : matchData.onde_assistir.map(c => c.platform_name)}
                 />
               </div>
             ) : (
@@ -198,7 +255,7 @@ export default function Home() {
                   matchData={matchData}
                   currentClub={selectedClub}
                   onVoteSubmitted={() => {
-                    setMatchData(getMatchDataForClub(selectedClub.id));
+                    // Refetch or update if needed
                   }}
                 />
               </div>
