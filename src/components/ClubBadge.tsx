@@ -8,22 +8,22 @@ interface ClubBadgeProps {
 
 // Map clubId to official ESPN CDN Team ID for high-res transparent PNGs
 const CLUB_LOGO_IDS: Record<string, string> = {
-  cap: "6213", // Athletico-PR
-  bot: "6214", // Botafogo
-  cam: "6215", // Atlético-MG
-  cor: "6216", // Corinthians
-  cru: "6217", // Cruzeiro
-  flu: "6218", // Fluminense
-  fla: "6219", // Flamengo
-  gre: "6220", // Grêmio
-  int: "6221", // Internacional
-  pal: "6222", // Palmeiras
-  sao: "6223", // São Paulo
-  san: "6224", // Santos
-  vas: "6225", // Vasco da Gama
-  cfc: "6226", // Coritiba
-  bah: "6227", // Bahia
-  for: "6228"  // Fortaleza
+  cap: "3458", // Athletico-PR
+  bot: "6086", // Botafogo
+  cam: "7632", // Atlético-MG
+  cor: "874",  // Corinthians
+  cru: "2022", // Cruzeiro
+  flu: "3445", // Fluminense
+  fla: "819",  // Flamengo
+  gre: "6273", // Grêmio
+  int: "1936", // Internacional
+  pal: "2029", // Palmeiras
+  sao: "2026", // São Paulo
+  san: "2674", // Santos
+  vas: "3454", // Vasco da Gama
+  cfc: "3456", // Coritiba
+  bah: "9967", // Bahia
+  for: "6272"  // Fortaleza
 };
 
 export const ClubBadge: React.FC<ClubBadgeProps> = ({ clubId, className = "", size = 48 }) => {
