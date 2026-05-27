@@ -1,0 +1,210 @@
+@import "tailwindcss";
+
+:root {
+  --background: #06070a;
+  --foreground: #f8fafc;
+
+  /* Club Theme dynamic variables - will be overridden by the state */
+  --club-primary: #e30613;
+  --club-secondary: #111111;
+  --club-text: #ffffff;
+  --club-accent: #00ffff;
+  --club-accent-glow: rgba(0, 255, 255, 0.15);
+}
+
+@theme {
+  --color-club-primary: var(--club-primary);
+  --color-club-secondary: var(--club-secondary);
+  --color-club-text: var(--club-text);
+  --color-club-accent: var(--club-accent);
+  --color-club-accent-glow: var(--club-accent-glow);
+  --font-sans: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(15, 23, 42, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, var(--club-accent-glow) 0%, transparent 50%);
+  background-attachment: fixed;
+}
+
+/* Premium Glassmorphism styling */
+.glass-panel {
+  background: rgba(10, 11, 18, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+}
+
+.glass-card {
+  background: rgba(18, 25, 41, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.02);
+}
+
+.glass-card-hover {
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.glass-card-hover:hover {
+  transform: translateY(-4px);
+  background: rgba(22, 32, 53, 0.6);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.5), 
+              0 0 15px -3px var(--club-accent-glow);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: #06070a;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  transition: background 0.2s;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--club-primary);
+}
+
+/* Neon glow animations */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 15px var(--club-accent-glow);
+    border-color: rgba(255, 255, 255, 0.06);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.25);
+    border-color: var(--club-accent);
+  }
+}
+
+.neon-glow {
+  animation: pulse-glow 2.5s infinite ease-in-out;
+}
+
+/* Ticket Cutout Design */
+.ticket-panel {
+  position: relative;
+  background: rgba(11, 14, 23, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 28px;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.4);
+}
+
+.ticket-divider {
+  position: relative;
+  border-top: 2px dashed rgba(255, 255, 255, 0.08);
+  margin: 20px -20px;
+}
+
+.ticket-divider::before,
+.ticket-divider::after {
+  content: '';
+  position: absolute;
+  top: -10px;
+  width: 20px;
+  height: 20px;
+  background: #06070a; /* Matches body bg */
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  z-index: 10;
+}
+
+.ticket-divider::before {
+  left: -10px;
+}
+
+.ticket-divider::after {
+  right: -10px;
+}
+
+/* Custom range slider thumb styling */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  background: rgba(255, 255, 255, 0.05);
+  height: 8px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+input[type="range"]::-moz-range-track {
+  background: rgba(255, 255, 255, 0.05);
+  height: 8px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  margin-top: -5px; /* Centers the thumb on the track */
+  background: var(--club-accent);
+  box-shadow: 0 0 12px var(--club-accent-glow), 0 2px 4px rgba(0,0,0,0.5);
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  transition: transform 0.1s, background-color 0.2s;
+}
+
+input[type="range"]::-webkit-slider-thumb:active {
+  transform: scale(1.2);
+}
+
+input[type="range"]::-moz-range-thumb {
+  background: var(--club-accent);
+  box-shadow: 0 0 12px var(--club-accent-glow), 0 2px 4px rgba(0,0,0,0.5);
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  border: 2px solid #ffffff;
+  transition: transform 0.1s, background-color 0.2s;
+}
+
+input[type="range"]::-moz-range-thumb:active {
+  transform: scale(1.2);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-spin-slow {
+  animation: spin 8s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Text glow */
+.text-neon-glow {
+  text-shadow: 0 0 8px var(--club-accent-glow);
+}
+
