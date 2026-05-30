@@ -6,7 +6,7 @@ import { WorldCupData, Match, Round } from "../types/worldcup";
 const roundsMap: { [name: string]: Match[] } = {};
 const groupsSet: { [groupName: string]: Set<string> } = {};
 
-rawWorldCupData.matches.forEach((rawMatch) => {
+rawWorldCupData.matches.forEach((rawMatch, index) => {
   const t1 = translateTeam(rawMatch.team1);
   const t2 = translateTeam(rawMatch.team2);
   
@@ -17,7 +17,7 @@ rawWorldCupData.matches.forEach((rawMatch) => {
   }
   
   const match: Match = {
-    num: rawMatch.num,
+    num: rawMatch.num || (index + 1),
     date: rawMatch.date,
     time: rawMatch.time,
     team1: t1,

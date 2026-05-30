@@ -1,21 +1,47 @@
 import { useState, useMemo, useEffect } from "react";
-import { Trophy, Calendar, Award, Activity, Heart, Globe, Sun, Moon } from "lucide-react";
+import { Trophy, Calendar, Award, Activity, Heart, Globe, Sun, Moon, RotateCcw } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import CountdownHero from "./components/CountdownHero";
 import MatchCenter from "./components/MatchCenter";
 import StandingsGrid from "./components/StandingsGrid";
+import KnockoutBracket from "./components/KnockoutBracket";
+import TopScorers from "./components/TopScorers";
+import StatsCenter from "./components/StatsCenter";
 import { mockWorldCupData } from "./data/mockWorldCup";
 import { calculateStandings } from "./utils/standingsCalculator";
+import { resolveAllRounds } from "./utils/playoffResolver";
 import { Round } from "./types/worldcup";
 
 export default function App() {
-  const [rounds, setRounds] = useState<Round[]>(mockWorldCupData.rounds);
-  const [activeTab, setActiveTab] = useState<"partidas" | "chaves">("partidas");
+  // Load rounds from localStorage or default to mock data
+  const [rounds, setRounds] = useState<Round[]>(() => {
+    const stored = localStorage.getItem("rdt-rounds");
+    return stored ? JSON.parse(stored) : mockWorldCupData.rounds;
+  });
+
+  // Load penalty winners from localStorage
+  const [knockoutWinners, setKnockoutWinners] = useState<{ [matchNum: number]: 1 | 2 }>(() => {
+    const stored = localStorage.getItem("rdt-knockout-winners");
+    return stored ? JSON.parse(stored) : {};
+  });
+
+  const [activeTab, setActiveTab] = useState<"partidas" | "grupos" | "mata-mata" | "artilharia" | "estatisticas">("partidas");
   const [theme, setTheme] = useState<"light" | "dark">(() => {
     const stored = localStorage.getItem("rdt-theme");
     return (stored as "light" | "dark") || "light";
   });
 
+  // Sync rounds to localStorage
+  useEffect(() => {
+    localStorage.setItem("rdt-rounds", JSON.stringify(rounds));
+  }, [rounds]);
+
+  // Sync knockout winners to localStorage
+  useEffect(() => {
+    localStorage.setItem("rdt-knockout-winners", JSON.stringify(knockoutWinners));
+  }, [knockoutWinners]);
+
+  // Sync theme
   useEffect(() => {
     if (theme === "dark") {
       document.documentElement.classList.add("dark");
@@ -25,17 +51,25 @@ export default function App() {
     localStorage.setItem("rdt-theme", theme);
   }, [theme]);
 
-  // Flat-map matches to calculate standings
-  const allMatches = useMemo(() => {
-    return rounds.flatMap((round) => round.matches);
+  // Compute standings on the fly from group stage matches
+  const standings = useMemo(() => {
+    // Only pass matches from rounds that represent group stages (Rodada 1, 2, 3 in portuguese translation)
+    const groupMatches = rounds
+      .filter((round) => round.name.startsWith("Rodada "))
+      .flatMap((round) => round.matches);
+    return calculateStandings(groupMatches);
   }, [rounds]);
 
-  // Compute standings on the fly
-  const standings = useMemo(() => {
-    return calculateStandings(allMatches);
-  }, [allMatches]);
+  // Resolve playoff teams dynamically
+  const resolvedRounds = useMemo(() => {
+    return resolveAllRounds(rounds, standings, knockoutWinners);
+  }, [rounds, standings, knockoutWinners]);
 
-  // Calculate quick stats for header metrics
+  // Calculate stats based on resolved matches (so playoffs are counted too)
+  const allMatches = useMemo(() => {
+    return resolvedRounds.flatMap((round) => round.matches);
+  }, [resolvedRounds]);
+
   const stats = useMemo(() => {
     const total = allMatches.length;
     const played = allMatches.filter((m) => m.score1 !== null && m.score2 !== null).length;
@@ -68,6 +102,24 @@ export default function App() {
       };
       return updated;
     });
+  };
+
+  // Handle selecting winner in tiebreak
+  const handleSelectKnockoutWinner = (matchNum: number, winnerNum: 1 | 2) => {
+    setKnockoutWinners((prev) => ({
+      ...prev,
+      [matchNum]: winnerNum,
+    }));
+  };
+
+  // Reset simulation back to defaults
+  const handleResetSimulation = () => {
+    if (window.confirm("Deseja realmente limpar toda a sua simulação?")) {
+      setRounds(mockWorldCupData.rounds);
+      setKnockoutWinners({});
+      localStorage.removeItem("rdt-rounds");
+      localStorage.removeItem("rdt-knockout-winners");
+    }
   };
 
   return (
@@ -119,6 +171,16 @@ export default function App() {
             </div>
           </div>
 
+          {/* Reset Simulation Button */}
+          <button
+            onClick={handleResetSimulation}
+            className="w-10 h-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center text-slate-300 hover:text-red-400 hover:border-red-500/30 transition-all cursor-pointer"
+            title="Limpar toda a simulação"
+            id="reset-simulation-button"
+          >
+            <RotateCcw size={16} />
+          </button>
+
           {/* Theme Switcher Button */}
           <button
             onClick={() => setTheme(theme === "light" ? "dark" : "light")}
@@ -162,37 +224,73 @@ export default function App() {
         </section>
 
         {/* Tab Navigator */}
-        <div className="flex p-1 bg-slate-900/60 border border-white/5 rounded-2xl relative shadow-inner max-w-md w-full mx-auto">
+        <div className="flex flex-wrap p-1 bg-slate-900/60 border border-white/5 rounded-2xl relative shadow-inner max-w-3xl w-full mx-auto justify-between gap-1">
           <button
             onClick={() => setActiveTab("partidas")}
-            className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-black uppercase tracking-wider transition-all duration-300 relative z-10 cursor-pointer ${
+            className={`flex-1 min-w-[100px] flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-[10px] sm:text-xs font-black uppercase tracking-wider transition-all duration-300 relative z-10 cursor-pointer ${
               activeTab === "partidas"
-                ? "bg-gold-premium text-slate-950 shadow-lg font-black"
+                ? "bg-gold-premium text-slate-950 shadow-md font-black"
                 : "text-slate-400 hover:text-white"
             }`}
             id="tab-partidas"
           >
-            <Calendar size={13} />
-            Partidas & Simulador
+            <Calendar size={12} />
+            Simulador
           </button>
           <button
-            onClick={() => setActiveTab("chaves")}
-            className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-black uppercase tracking-wider transition-all duration-300 relative z-10 cursor-pointer ${
-              activeTab === "chaves"
-                ? "bg-gold-premium text-slate-950 shadow-lg font-black"
+            onClick={() => setActiveTab("grupos")}
+            className={`flex-1 min-w-[100px] flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-[10px] sm:text-xs font-black uppercase tracking-wider transition-all duration-300 relative z-10 cursor-pointer ${
+              activeTab === "grupos"
+                ? "bg-gold-premium text-slate-950 shadow-md font-black"
                 : "text-slate-400 hover:text-white"
             }`}
-            id="tab-chaves"
+            id="tab-grupos"
           >
-            <Award size={13} />
-            Classificação
+            <Trophy size={12} />
+            Grupos
+          </button>
+          <button
+            onClick={() => setActiveTab("mata-mata")}
+            className={`flex-1 min-w-[100px] flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-[10px] sm:text-xs font-black uppercase tracking-wider transition-all duration-300 relative z-10 cursor-pointer ${
+              activeTab === "mata-mata"
+                ? "bg-gold-premium text-slate-950 shadow-md font-black"
+                : "text-slate-400 hover:text-white"
+            }`}
+            id="tab-mata-mata"
+          >
+            <Award size={12} />
+            Mata-Mata
+          </button>
+          <button
+            onClick={() => setActiveTab("artilharia")}
+            className={`flex-1 min-w-[100px] flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-[10px] sm:text-xs font-black uppercase tracking-wider transition-all duration-300 relative z-10 cursor-pointer ${
+              activeTab === "artilharia"
+                ? "bg-gold-premium text-slate-950 shadow-md font-black"
+                : "text-slate-400 hover:text-white"
+            }`}
+            id="tab-artilharia"
+          >
+            <Activity size={12} />
+            Artilharia
+          </button>
+          <button
+            onClick={() => setActiveTab("estatisticas")}
+            className={`flex-1 min-w-[100px] flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-[10px] sm:text-xs font-black uppercase tracking-wider transition-all duration-300 relative z-10 cursor-pointer ${
+              activeTab === "estatisticas"
+                ? "bg-gold-premium text-slate-950 shadow-md font-black"
+                : "text-slate-400 hover:text-white"
+            }`}
+            id="tab-estatisticas"
+          >
+            <Globe size={12} />
+            Estatísticas
           </button>
         </div>
 
         {/* Tab Content Panels */}
         <div className="w-full">
           <AnimatePresence mode="wait">
-            {activeTab === "partidas" ? (
+            {activeTab === "partidas" && (
               <motion.div
                 key="partidas"
                 initial={{ opacity: 0, y: 15 }}
@@ -201,19 +299,62 @@ export default function App() {
                 transition={{ duration: 0.4 }}
               >
                 <MatchCenter 
-                  rounds={rounds} 
+                  rounds={resolvedRounds} 
                   onMatchScoreChange={handleMatchScoreChange} 
                 />
               </motion.div>
-            ) : (
+            )}
+            
+            {activeTab === "grupos" && (
               <motion.div
-                key="chaves"
+                key="grupos"
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -15 }}
                 transition={{ duration: 0.4 }}
               >
                 <StandingsGrid standings={standings} />
+              </motion.div>
+            )}
+
+            {activeTab === "mata-mata" && (
+              <motion.div
+                key="mata-mata"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.4 }}
+              >
+                <KnockoutBracket
+                  rounds={resolvedRounds}
+                  knockoutWinners={knockoutWinners}
+                  onMatchScoreChange={handleMatchScoreChange}
+                  onSelectKnockoutWinner={handleSelectKnockoutWinner}
+                />
+              </motion.div>
+            )}
+
+            {activeTab === "artilharia" && (
+              <motion.div
+                key="artilharia"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.4 }}
+              >
+                <TopScorers />
+              </motion.div>
+            )}
+
+            {activeTab === "estatisticas" && (
+              <motion.div
+                key="estatisticas"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.4 }}
+              >
+                <StatsCenter rounds={resolvedRounds} />
               </motion.div>
             )}
           </AnimatePresence>
