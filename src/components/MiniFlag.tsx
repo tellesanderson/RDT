@@ -327,6 +327,151 @@ export default function MiniFlag({ code, className = "w-5 h-4" }: MiniFlagProps)
           <rect width="0.8" height="0.5" fill="#CC143C" />
         </svg>
       );
+    case "CZE": // Czech Republic
+      return (
+        <svg className={`${className} rounded shadow-sm border border-slate-300`} viewBox="0 0 3 2">
+          <rect width="3" height="1" fill="#FFFFFF" />
+          <rect y="1" width="3" height="1" fill="#D71920" />
+          <polygon points="0,0 1.5,1 0,2" fill="#11457E" />
+        </svg>
+      );
+    case "BIH": // Bosnia & Herzegovina
+      return (
+        <svg className={`${className} rounded shadow-sm border border-blue-800/15`} viewBox="0 0 2 1">
+          <rect width="2" height="1" fill="#002F6C" />
+          <polygon points="0.5,0 1.5,0 1.5,1" fill="#FECB00" />
+          {/* Miniature stars representations */}
+          <circle cx="0.7" cy="0.2" r="0.02" fill="#FFFFFF" />
+          <circle cx="0.8" cy="0.4" r="0.02" fill="#FFFFFF" />
+          <circle cx="0.9" cy="0.6" r="0.02" fill="#FFFFFF" />
+          <circle cx="1.0" cy="0.8" r="0.02" fill="#FFFFFF" />
+        </svg>
+      );
+    case "TUR": // Turkey
+      return (
+        <svg className={`${className} rounded shadow-sm border border-red-500/10`} viewBox="0 0 3 2">
+          <rect width="3" height="2" fill="#E30A17" />
+          <circle cx="1.15" cy="1" r="0.4" fill="#FFFFFF" />
+          <circle cx="1.25" cy="1" r="0.32" fill="#E30A17" />
+          <polygon points="1.7,0.9 1.75,1.05 1.9,1.05 1.78,1.15 1.83,1.3 1.7,1.2 1.57,1.3 1.62,1.15 1.5,1.05 1.65,1.05" fill="#FFFFFF" />
+        </svg>
+      );
+    case "CUW": // Curaçao
+      return (
+        <svg className={`${className} rounded shadow-sm border border-blue-900/15`} viewBox="0 0 3 2">
+          <rect width="3" height="2" fill="#002B7F" />
+          <rect y="1.2" width="3" height="0.3" fill="#F9E814" />
+          <circle cx="0.5" cy="0.5" r="0.15" fill="#FFFFFF" />
+          <circle cx="0.9" cy="0.7" r="0.1" fill="#FFFFFF" />
+        </svg>
+      );
+    case "CPV": // Cape Verde
+      return (
+        <svg className={`${className} rounded shadow-sm border border-blue-900/10`} viewBox="0 0 17 10">
+          <rect width="17" height="10" fill="#002B7F" />
+          <rect y="5" width="17" height="2" fill="#FFFFFF" />
+          <rect y="5.7" width="17" height="0.6" fill="#CE1126" />
+          <circle cx="6" cy="6" r="1.5" fill="none" stroke="#F9E814" strokeWidth="0.4" strokeDasharray="0.3 0.2" />
+        </svg>
+      );
+    case "IRQ": // Iraq
+      return (
+        <svg className={`${className} rounded shadow-sm border border-slate-300`} viewBox="0 0 3 2">
+          <rect width="3" height="0.66" fill="#DA121A" />
+          <rect y="0.66" width="3" height="0.66" fill="#FFFFFF" />
+          <rect y="1.33" width="3" height="0.66" fill="#000000" />
+          {/* Green takbir representation */}
+          <circle cx="1.5" cy="1" r="0.1" fill="#007A3D" />
+        </svg>
+      );
+    case "NOR": // Norway
+      return (
+        <svg className={`${className} rounded shadow-sm border border-red-500/10`} viewBox="0 0 22 16">
+          <rect width="22" height="16" fill="#BA0C2F" />
+          <rect x="6" width="4" height="16" fill="#FFFFFF" />
+          <rect y="6" width="22" height="4" fill="#FFFFFF" />
+          <rect x="7" width="2" height="16" fill="#00205B" />
+          <rect y="7" width="22" height="2" fill="#00205B" />
+        </svg>
+      );
+    case "AUT": // Austria
+      return (
+        <svg className={`${className} rounded shadow-sm border border-red-500/10`} viewBox="0 0 3 2">
+          <rect width="3" height="2" fill="#ED2939" />
+          <rect y="0.66" width="3" height="0.66" fill="#FFFFFF" />
+        </svg>
+      );
+    case "JOR": // Jordan
+      return (
+        <svg className={`${className} rounded shadow-sm border border-slate-300`} viewBox="0 0 2 1">
+          <rect width="2" height="0.33" fill="#000000" />
+          <rect y="0.33" width="2" height="0.33" fill="#FFFFFF" />
+          <rect y="0.66" width="2" height="0.33" fill="#007A3D" />
+          <polygon points="0,0 0.67,0.5 0,1" fill="#E20E17" />
+          <circle cx="0.22" cy="0.5" r="0.04" fill="#FFFFFF" />
+        </svg>
+      );
+    case "COD": // DR Congo
+      return (
+        <svg className={`${className} rounded shadow-sm border border-blue-500/10`} viewBox="0 0 400 300">
+          <rect width="400" height="300" fill="#007FFF" />
+          <polygon points="0,300 400,0 400,30 0,300" fill="#FDD017" />
+          <polygon points="0,300 400,0 380,0 0,285" fill="#D21034" />
+          <polygon points="0,300 400,0 400,15 20,300" fill="#FDD017" />
+          <polygon points="50,45 60,75 88,75 65,95 75,125 50,105 25,125 35,95 12,75 40,75" fill="#FDD017" />
+        </svg>
+      );
+    case "UZB": // Uzbekistan
+      return (
+        <svg className={`${className} rounded shadow-sm border border-sky-400/10`} viewBox="0 0 500 250">
+          <rect width="500" height="80" fill="#00AEC7" />
+          <rect y="80" width="500" height="5" fill="#E30A17" />
+          <rect y="85" width="500" height="80" fill="#FFFFFF" />
+          <rect y="165" width="500" height="5" fill="#E30A17" />
+          <rect y="170" width="500" height="80" fill="#1EB53A" />
+          <circle cx="50" cy="40" r="15" fill="#FFFFFF" />
+          <circle cx="58" cy="40" r="15" fill="#00AEC7" />
+        </svg>
+      );
+    case "PAN": // Panama
+      return (
+        <svg className={`${className} rounded shadow-sm border border-slate-300`} viewBox="0 0 3 2">
+          <rect width="1.5" height="1" fill="#FFFFFF" />
+          <rect x="1.5" width="1.5" height="1" fill="#002B7F" />
+          <rect y="1" width="1.5" height="1" fill="#D21034" />
+          <rect x="1.5" y="1" width="1.5" height="1" fill="#FFFFFF" />
+          <circle cx="0.75" cy="0.5" r="0.15" fill="#002B7F" />
+          <circle cx="2.25" cy="1.5" r="0.15" fill="#D21034" />
+        </svg>
+      );
+    case "RSA": // South Africa
+      return (
+        <svg className={`${className} rounded shadow-sm border border-emerald-500/10`} viewBox="0 0 3 2">
+          <rect width="3" height="0.66" fill="#E21C30" />
+          <rect y="0.66" width="3" height="0.68" fill="#FFFFFF" />
+          <rect y="1.33" width="3" height="0.67" fill="#000000" />
+          <polygon points="0,0 1.2,1 0,2" fill="#002395" stroke="#FFFFFF" strokeWidth="0.15" />
+          <polygon points="0,0.15 1.0,1 0,1.85" fill="#007A4D" stroke="#F9E814" strokeWidth="0.1" />
+        </svg>
+      );
+    case "EGY": // Egypt
+      return (
+        <svg className={`${className} rounded shadow-sm border border-red-500/10`} viewBox="0 0 3 2">
+          <rect width="3" height="0.66" fill="#CE1126" />
+          <rect y="0.66" width="3" height="0.66" fill="#FFFFFF" />
+          <rect y="1.33" width="3" height="0.66" fill="#000000" />
+          <circle cx="1.5" cy="1" r="0.15" fill="#C0930C" />
+        </svg>
+      );
+    case "ALG": // Algeria
+      return (
+        <svg className={`${className} rounded shadow-sm border border-emerald-500/10`} viewBox="0 0 3 2">
+          <rect width="1.5" height="2" fill="#006233" />
+          <rect x="1.5" width="1.5" height="2" fill="#FFFFFF" />
+          <circle cx="1.5" cy="1" r="0.4" fill="#D21034" />
+          <circle cx="1.6" cy="1" r="0.4" fill="#FFFFFF" />
+        </svg>
+      );
     default:
       // Neutral default flag for any generic/unmapped team code
       return (
