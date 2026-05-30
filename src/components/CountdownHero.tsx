@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Trophy, Globe, MapPin } from "lucide-react";
+import MapModal from "./modals/MapModal";
+import TeamsModal from "./modals/TeamsModal";
+import ChampionsModal from "./modals/ChampionsModal";
 
 interface TimeLeft {
   days: number;
@@ -29,6 +32,9 @@ export default function CountdownHero() {
 
   const [timeLeft, setTimeLeft] = useState<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [mounted, setMounted] = useState(false);
+  const [isMapOpen, setIsMapOpen] = useState(false);
+  const [isTeamsOpen, setIsTeamsOpen] = useState(false);
+  const [isChampionsOpen, setIsChampionsOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -49,23 +55,36 @@ export default function CountdownHero() {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gold-premium/10 via-neon-green/5 to-transparent pointer-events-none"></div>
 
       {/* Floating Trophy Icon */}
-      <motion.div
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
         animate={{ y: [0, -8, 0] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-        className="w-14 h-14 rounded-2xl bg-gold-premium/10 border border-gold-premium/30 flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(229,184,66,0.15)] z-10"
+        transition={{ 
+          y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+          scale: { duration: 0.2 }
+        }}
+        onClick={() => setIsChampionsOpen(true)}
+        className="w-14 h-14 rounded-2xl bg-gold-premium/10 border border-gold-premium/30 hover:border-gold-premium/60 hover:bg-gold-premium/20 flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(229,184,66,0.15)] z-10 cursor-pointer transition-colors"
+        title="Ver Galeria de Campeões Históricos"
       >
         <Trophy size={26} className="text-gold-premium" />
-      </motion.div>
+      </motion.button>
 
       {/* Badges / Header info */}
       <div className="flex flex-wrap items-center justify-center gap-2 z-10 mb-4">
-        <span className="text-[10px] font-black tracking-widest text-neon-green bg-neon-green/10 border border-neon-green/20 px-3 py-1 rounded-full uppercase glow-text-neon">
+        <button
+          onClick={() => setIsMapOpen(true)}
+          className="text-[10px] font-black tracking-widest text-neon-green bg-neon-green/10 border border-neon-green/20 hover:bg-neon-green/25 hover:border-neon-green/35 px-3 py-1 rounded-full uppercase glow-text-neon cursor-pointer transition-all focus:outline-none"
+        >
           AMÉRICA DO NORTE 2026
-        </span>
-        <span className="text-[10px] font-black tracking-widest text-gold-premium bg-gold-premium/10 border border-gold-premium/20 px-3 py-1 rounded-full uppercase flex items-center gap-1">
+        </button>
+        <button
+          onClick={() => setIsTeamsOpen(true)}
+          className="text-[10px] font-black tracking-widest text-gold-premium bg-gold-premium/10 border border-gold-premium/20 hover:bg-gold-premium/25 hover:border-gold-premium/35 px-3 py-1 rounded-full uppercase flex items-center gap-1 cursor-pointer transition-all focus:outline-none"
+        >
           <Globe size={11} className="animate-spin-slow" />
           48 SELEÇÕES
-        </span>
+        </button>
       </div>
 
       <h2 className="text-2xl sm:text-4xl md:text-5xl font-black uppercase tracking-tight text-white max-w-2xl leading-none z-10">
@@ -98,6 +117,20 @@ export default function CountdownHero() {
           <span>Cidade do México &bull; Toronto &bull; Nova York</span>
         </div>
       </div>
+
+      {/* Modals */}
+      <AnimatePresence>
+        {isMapOpen && (
+          <MapModal isOpen={isMapOpen} onClose={() => setIsMapOpen(false)} />
+        )}
+        {isTeamsOpen && (
+          <TeamsModal isOpen={isTeamsOpen} onClose={() => setIsTeamsOpen(false)} />
+        )}
+        {isChampionsOpen && (
+          <ChampionsModal isOpen={isChampionsOpen} onClose={() => setIsChampionsOpen(false)} />
+        )}
+      </AnimatePresence>
+
     </div>
   );
 }
