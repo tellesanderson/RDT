@@ -9,23 +9,23 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Radar da Torcida | Placar & Corneta Oficial",
-  description: "Resumos dinâmicos de jogos, onde assistir e central de corneta em tempo real. Sem anúncios, sem clickbaits.",
-  keywords: ["futebol", "radar da torcida", "brasileirao", "palpites", "corneta", "notas de futebol"],
+  title: "Radar da Torcida | Copa do Mundo 2026 - Hub de Elite",
+  description: "Acompanhe a contagem regressiva, classificação dos grupos e os maiores confrontos da Copa do Mundo FIFA 2026 em uma interface premium imersiva inspirada em painéis de jogos.",
+  keywords: ["copa do mundo 2026", "copa 2026", "tabela copa do mundo", "brasil x argentina copa 2026", "futebol", "bento grid futebol"],
   authors: [{ name: "Radar da Torcida" }],
   formatDetection: {
     telephone: false,
   },
   openGraph: {
-    title: "Radar da Torcida | Placar & Corneta Oficial",
-    description: "Resumos dinâmicos de jogos, onde assistir e central de corneta em tempo real. Sem anúncios, sem clickbaits.",
+    title: "Radar da Torcida | Copa do Mundo 2026 - Hub de Elite",
+    description: "Acompanhe a contagem regressiva, classificação dos grupos e os maiores confrontos da Copa do Mundo FIFA 2026 em uma interface premium imersiva.",
     type: "website",
     locale: "pt_BR",
   }
 };
 
 export const viewport: Viewport = {
-  themeColor: "#090a0f",
+  themeColor: "#02040a",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
@@ -34,12 +34,12 @@ export const viewport: Viewport = {
 
 export default function RootLayout({
   children,
-  }: Readonly<{
-    children: React.ReactNode;
-  }>) {
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html lang="pt-BR" className={`${outfit.variable} h-full antialiased dark`}>
-      <body className="min-h-full flex flex-col font-sans">
+      <body className="min-h-full flex flex-col font-sans bg-slate-950 text-slate-100 selection:bg-neon-green/30 selection:text-white">
         {children}
       </body>
     </html>
