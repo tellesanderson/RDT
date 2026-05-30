@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Radar da Torcida | Copa do Mundo 2026</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Em construção para a Copa do Mundo 2026. Acompanhe a contagem regressiva e novidades em breve.">
+  <meta name="keywords" content="copa do mundo 2026, copa 2026, futebol, radar da torcida">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏆</text></svg>">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Tailwind config for custom theme colors -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'gold-premium': '#e5b842',
+            'neon-green': '#00ff87',
+          },
+          fontFamily: {
+            sans: ['Outfit', 'Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts (Outfit) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    /* Styling elements that are cleaner in plain CSS */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.02);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.02);
+    }
+    
+    .glow-text-gold {
+      text-shadow: 0 0 15px rgba(229, 184, 66, 0.4);
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(2deg); }
+    }
+
+    .animate-float {
+      animation: float 5s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="bg-[#02040a] text-slate-100 min-h-full flex flex-col items-center justify-center relative overflow-hidden font-sans px-4 selection:bg-neon-green/30 selection:text-white">
+  
+  <!-- Stadium ambient light effects -->
+  <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gold-premium/10 rounded-full blur-[100px] opacity-30 pointer-events-none"></div>
+  <div class="absolute bottom-1/4 left-1/2 -translate-x-1/2 translate-y-1/2 w-[500px] h-[500px] bg-neon-green/5 rounded-full blur-[100px] opacity-20 pointer-events-none"></div>
+  
+  <!-- Grid background -->
+  <div class="absolute inset-0 opacity-[0.03] bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none"></div>
+
+  <!-- Main Card -->
+  <main class="glass-card max-w-md w-full rounded-3xl p-8 border border-white/5 bg-slate-900/10 backdrop-blur-md text-center flex flex-col items-center shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-10">
+    
+    <!-- Floating Trophy Icon -->
+    <div class="animate-float w-16 h-16 rounded-2xl bg-gold-premium/10 border border-gold-premium/30 flex items-center justify-center mb-6 shadow-[0_0_20px_rgba(229,184,66,0.15)]">
+      <svg class="w-8 h-8 text-gold-premium" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 9V2h12v7m-12 0a4 4 0 000 8h12a4 4 0 000-8m-12 0h12M9 22h6m-6 0v-5m6 5v-5"></path>
+      </svg>
+    </div>
+
+    <!-- Title -->
+    <h1 class="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white">
+      COPA DO MUNDO <span class="text-gold-premium glow-text-gold">2026</span>
+    </h1>
+
+    <!-- Status Badge -->
+    <div class="mt-4 bg-neon-green/10 border border-neon-green/20 px-4 py-1.5 rounded-full text-neon-green text-[10px] font-black uppercase tracking-widest animate-pulse">
+      Em Construção
+    </div>
+
+    <!-- Message -->
+    <p class="text-xs text-slate-400 mt-6 leading-relaxed max-w-xs">
+      Estamos preparando uma plataforma premium com estatísticas, grupos e placares em tempo real para o maior mundial de todos os tempos.
+    </p>
+
+    <!-- Divider -->
+    <div class="w-12 h-[1px] bg-white/10 my-6"></div>
+
+    <!-- Footer Note -->
+    <footer class="text-[9px] font-bold text-slate-500 tracking-[0.2em] uppercase">
+      Radar da Torcida &bull; Hub de Elite
+    </footer>
+  </main>
+
+</body>
+</html>
