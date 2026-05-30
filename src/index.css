@@ -1,14 +1,75 @@
 @import "tailwindcss";
 
 :root {
+  --background: #f4f7f5;
+  --foreground: #0a0f1d;
+  
+  /* World Cup 2026 Premium Design Tokens (Light Mode - Stadium Lit & Energetic) */
+  --gold-premium: #c49516;
+  --gold-glow: rgba(196, 149, 22, 0.12);
+  --neon-green: #00994f;
+  --neon-glow: rgba(0, 153, 79, 0.12);
+
+  --slate-950: #ffffff;
+  --slate-900: #f8fafc;
+  --slate-800: #f1f5f9;
+  --slate-700: #e2e8f0;
+  --slate-600: #64748b;
+  --slate-500: #475569;
+  --slate-400: #334155;
+  --slate-300: #0f172a;
+  --white-theme: #0a0f1d;
+
+  --bg-grad-1: rgba(196, 149, 22, 0.12);
+  --bg-grad-2: rgba(0, 153, 79, 0.08);
+  --bg-grad-3: rgba(196, 149, 22, 0.05);
+
+  --glass-panel-bg: rgba(255, 255, 255, 0.85);
+  --glass-panel-border: rgba(0, 0, 0, 0.06);
+  --glass-panel-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.05);
+  
+  --glass-card-bg: rgba(255, 255, 255, 0.6);
+  --glass-card-border: rgba(0, 0, 0, 0.05);
+  --glass-card-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 4px 20px 0 rgba(0, 0, 0, 0.01);
+
+  --scrollbar-track: #f8fafc;
+  --scrollbar-thumb: rgba(0, 0, 0, 0.15);
+}
+
+.dark {
   --background: #02040a;
   --foreground: #f8fafc;
   
-  /* World Cup 2026 Premium Design Tokens */
+  /* World Cup 2026 Premium Design Tokens (Dark Mode) */
   --gold-premium: #e5b842;
   --gold-glow: rgba(229, 184, 66, 0.15);
   --neon-green: #00ff87;
   --neon-glow: rgba(0, 255, 135, 0.15);
+
+  --slate-950: #02040a;
+  --slate-900: #0d111d;
+  --slate-800: #1d2433;
+  --slate-700: #2a3447;
+  --slate-600: #475569;
+  --slate-500: #64748b;
+  --slate-400: #94a3b8;
+  --slate-300: #cbd5e1;
+  --white-theme: #ffffff;
+
+  --bg-grad-1: rgba(229, 184, 66, 0.08);
+  --bg-grad-2: rgba(0, 255, 135, 0.04);
+  --bg-grad-3: rgba(229, 184, 66, 0.03);
+
+  --glass-panel-bg: rgba(10, 15, 30, 0.75);
+  --glass-panel-border: rgba(255, 255, 255, 0.05);
+  --glass-panel-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.5);
+  
+  --glass-card-bg: rgba(255, 255, 255, 0.02);
+  --glass-card-border: rgba(255, 255, 255, 0.04);
+  --glass-card-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.02);
+
+  --scrollbar-track: #02040a;
+  --scrollbar-thumb: rgba(255, 255, 255, 0.1);
 }
 
 @theme {
@@ -16,6 +77,17 @@
   --color-gold-glow: var(--gold-glow);
   --color-neon-green: var(--neon-green);
   --color-neon-glow: var(--neon-glow);
+  
+  --color-slate-950: var(--slate-950);
+  --color-slate-900: var(--slate-900);
+  --color-slate-800: var(--slate-800);
+  --color-slate-700: var(--slate-700);
+  --color-slate-600: var(--slate-600);
+  --color-slate-500: var(--slate-500);
+  --color-slate-400: var(--slate-400);
+  --color-slate-300: var(--slate-300);
+  --color-white: var(--white-theme);
+
   --font-sans: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
@@ -26,28 +98,30 @@ body {
   overflow-x: hidden;
   font-family: var(--font-sans);
   background-image: 
-    radial-gradient(circle at 50% -20%, rgba(229, 184, 66, 0.08) 0%, transparent 60%),
-    radial-gradient(circle at 10% 30%, rgba(0, 255, 135, 0.04) 0%, transparent 40%),
-    radial-gradient(circle at 90% 70%, rgba(229, 184, 66, 0.03) 0%, transparent 50%);
+    radial-gradient(circle at 50% -20%, var(--bg-grad-1) 0%, transparent 60%),
+    radial-gradient(circle at 10% 30%, var(--bg-grad-2) 0%, transparent 40%),
+    radial-gradient(circle at 90% 70%, var(--bg-grad-3) 0%, transparent 50%);
   background-attachment: fixed;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Glassmorphism Design System */
 .glass-panel {
-  background: rgba(10, 15, 30, 0.7);
+  background: var(--glass-panel-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--glass-panel-border);
+  box-shadow: var(--glass-panel-shadow);
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--glass-card-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.04);
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.02);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid var(--glass-card-border);
+  box-shadow: var(--glass-card-shadow);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease, border-color 0.3s ease;
 }
 
 /* Custom Scrollbar */
@@ -56,10 +130,10 @@ body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #02040a;
+  background: var(--scrollbar-track);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--scrollbar-thumb);
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -68,31 +142,32 @@ body {
 
 /* Glow Utilities */
 .glow-text-gold {
-  text-shadow: 0 0 12px rgba(229, 184, 66, 0.4);
+  text-shadow: 0 0 12px var(--gold-glow);
 }
 
 .glow-text-neon {
-  text-shadow: 0 0 12px rgba(0, 255, 135, 0.5);
+  text-shadow: 0 0 12px var(--neon-glow);
 }
 
 /* Micro-animations */
 @keyframes grid-glow {
   0%, 100% {
-    opacity: 0.15;
+    opacity: 0.12;
   }
   50% {
-    opacity: 0.3;
+    opacity: 0.22;
   }
 }
 
 .grid-glow-bg {
   position: absolute;
   inset: 0;
-  background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-image: linear-gradient(rgba(120, 120, 120, 0.03) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(120, 120, 120, 0.03) 1px, transparent 1px);
   background-size: 40px 40px;
   background-position: center center;
   mask-image: radial-gradient(circle at 50% 50%, black, transparent 80%);
   -webkit-mask-image: radial-gradient(circle at 50% 50%, black, transparent 80%);
   animation: grid-glow 4s infinite ease-in-out;
 }
+

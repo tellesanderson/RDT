@@ -463,6 +463,41 @@ export default function MiniFlag({ code, className = "w-5 h-4" }: MiniFlagProps)
           <circle cx="1.5" cy="1" r="0.15" fill="#C0930C" />
         </svg>
       );
+    case "QAT": // Qatar
+      return (
+        <svg className={`${className} rounded shadow-sm border border-rose-900/10`} viewBox="0 0 28 11">
+          <rect width="28" height="11" fill="#8A1538" />
+          <path d="M0,0 L8,0 L10,0.61 L8,1.22 L10,1.83 L8,2.44 L10,3.05 L8,3.66 L10,4.27 L8,4.88 L10,5.5 L8,6.11 L10,6.72 L8,7.33 L10,7.94 L8,8.55 L10,9.16 L8,9.77 L10,10.38 L8,11 L0,11 Z" fill="#FFFFFF" />
+        </svg>
+      );
+    case "SCO": // Scotland
+      return (
+        <svg className={`${className} rounded shadow-sm border border-blue-600/10`} viewBox="0 0 5 3">
+          <rect width="5" height="3" fill="#005EB8" />
+          <line x1="0" y1="0" x2="5" y2="3" stroke="#FFFFFF" strokeWidth="0.6" />
+          <line x1="5" y1="0" x2="0" y2="3" stroke="#FFFFFF" strokeWidth="0.6" />
+        </svg>
+      );
+    case "HAI": // Haiti
+      return (
+        <svg className={`${className} rounded shadow-sm border border-blue-800/10`} viewBox="0 0 5 3">
+          <rect width="5" height="1.5" fill="#00209F" />
+          <rect y="1.5" width="5" height="1.5" fill="#D21034" />
+          <rect x="1.9" y="1.0" width="1.2" height="1.0" fill="#FFFFFF" />
+          <circle cx="2.5" cy="1.4" r="0.25" fill="#007A3D" />
+          <rect x="2.4" y="1.3" width="0.2" height="0.4" fill="#C0930C" />
+        </svg>
+      );
+    case "PAR": // Paraguay
+      return (
+        <svg className={`${className} rounded shadow-sm border border-red-500/10`} viewBox="0 0 9 6">
+          <rect width="9" height="2" fill="#D1121C" />
+          <rect y="2" width="9" height="2" fill="#FFFFFF" />
+          <rect y="4" width="9" height="2" fill="#0038A8" />
+          <circle cx="4.5" cy="3" r="0.6" fill="none" stroke="#007A3D" strokeWidth="0.15" />
+          <circle cx="4.5" cy="3" r="0.3" fill="#FEE100" />
+        </svg>
+      );
     case "ALG": // Algeria
       return (
         <svg className={`${className} rounded shadow-sm border border-emerald-500/10`} viewBox="0 0 3 2">

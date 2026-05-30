@@ -1,5 +1,5 @@
-import { useState, useMemo } from "react";
-import { Trophy, Calendar, Award, Activity, Heart, Globe } from "lucide-react";
+import { useState, useMemo, useEffect } from "react";
+import { Trophy, Calendar, Award, Activity, Heart, Globe, Sun, Moon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import CountdownHero from "./components/CountdownHero";
 import MatchCenter from "./components/MatchCenter";
@@ -11,6 +11,19 @@ import { Round } from "./types/worldcup";
 export default function App() {
   const [rounds, setRounds] = useState<Round[]>(mockWorldCupData.rounds);
   const [activeTab, setActiveTab] = useState<"partidas" | "chaves">("partidas");
+  const [theme, setTheme] = useState<"light" | "dark">(() => {
+    const stored = localStorage.getItem("rdt-theme");
+    return (stored as "light" | "dark") || "light";
+  });
+
+  useEffect(() => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+    localStorage.setItem("rdt-theme", theme);
+  }, [theme]);
 
   // Flat-map matches to calculate standings
   const allMatches = useMemo(() => {
@@ -58,7 +71,7 @@ export default function App() {
   };
 
   return (
-    <div className="flex-1 flex flex-col min-h-screen relative overflow-hidden bg-slate-950">
+    <div className="flex-1 flex flex-col min-h-screen relative overflow-hidden bg-transparent">
       
       {/* Stadium Grid Ambient Lights */}
       <div className="grid-glow-bg pointer-events-none" />
@@ -87,21 +100,56 @@ export default function App() {
           </div>
         </div>
 
-        {/* Global Live Stats */}
-        <div className="hidden sm:flex items-center gap-4 bg-white/5 border border-white/5 pl-4 pr-5 py-1.5 rounded-2xl">
-          <div className="text-left border-r border-white/10 pr-4">
-            <span className="text-[8px] text-slate-500 font-bold block uppercase leading-none">Partidas Simuladas</span>
-            <span className="text-xs font-black text-white block mt-0.5 tabular-nums">
-              {stats.played} <span className="text-[9px] text-slate-500">/ {stats.total}</span>
-            </span>
+        {/* Controls & Metrics */}
+        <div className="flex items-center gap-3">
+          {/* Global Live Stats */}
+          <div className="hidden sm:flex items-center gap-4 bg-white/5 border border-white/5 pl-4 pr-5 py-1.5 rounded-2xl">
+            <div className="text-left border-r border-white/10 pr-4">
+              <span className="text-[8px] text-slate-500 font-bold block uppercase leading-none">Partidas Simuladas</span>
+              <span className="text-xs font-black text-white block mt-0.5 tabular-nums">
+                {stats.played} <span className="text-[9px] text-slate-500">/ {stats.total}</span>
+              </span>
+            </div>
+            <div className="text-left">
+              <span className="text-[8px] text-slate-500 font-bold block uppercase leading-none">Total de Gols</span>
+              <span className="text-xs font-black text-gold-premium block mt-0.5 tabular-nums flex items-center gap-1">
+                <Activity size={10} className="text-neon-green animate-pulse" />
+                {stats.goals}
+              </span>
+            </div>
           </div>
-          <div className="text-left">
-            <span className="text-[8px] text-slate-500 font-bold block uppercase leading-none">Total de Gols</span>
-            <span className="text-xs font-black text-gold-premium block mt-0.5 tabular-nums flex items-center gap-1">
-              <Activity size={10} className="text-neon-green animate-pulse" />
-              {stats.goals}
-            </span>
-          </div>
+
+          {/* Theme Switcher Button */}
+          <button
+            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+            className="w-10 h-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center text-slate-300 hover:text-white hover:border-gold-premium/30 transition-all cursor-pointer"
+            title={theme === "light" ? "Mudar para Modo Escuro" : "Mudar para Modo Claro"}
+            id="theme-toggle-button"
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              {theme === "light" ? (
+                <motion.div
+                  initial={{ rotate: -90, scale: 0.8, opacity: 0 }}
+                  animate={{ rotate: 0, scale: 1, opacity: 1 }}
+                  exit={{ rotate: 90, scale: 0.8, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  key="moon"
+                >
+                  <Moon size={18} className="text-gold-premium" />
+                </motion.div>
+              ) : (
+                <motion.div
+                  initial={{ rotate: 90, scale: 0.8, opacity: 0 }}
+                  animate={{ rotate: 0, scale: 1, opacity: 1 }}
+                  exit={{ rotate: -90, scale: 0.8, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                  key="sun"
+                >
+                  <Sun size={18} className="text-gold-premium" />
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </button>
         </div>
       </header>
 
