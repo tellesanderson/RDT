@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+:root {
+  --background: #02040a;
+  --foreground: #f8fafc;
+  
+  /* World Cup 2026 Premium Design Tokens */
+  --gold-premium: #e5b842;
+  --gold-glow: rgba(229, 184, 66, 0.15);
+  --neon-green: #00ff87;
+  --neon-glow: rgba(0, 255, 135, 0.15);
+}
+
+@theme {
+  --color-gold-premium: var(--gold-premium);
+  --color-gold-glow: var(--gold-glow);
+  --color-neon-green: var(--neon-green);
+  --color-neon-glow: var(--neon-glow);
+  --font-sans: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-family: var(--font-sans);
+  background-image: 
+    radial-gradient(circle at 50% -20%, rgba(229, 184, 66, 0.08) 0%, transparent 60%),
+    radial-gradient(circle at 10% 30%, rgba(0, 255, 135, 0.04) 0%, transparent 40%),
+    radial-gradient(circle at 90% 70%, rgba(229, 184, 66, 0.03) 0%, transparent 50%);
+  background-attachment: fixed;
+}
+
+/* Glassmorphism Design System */
+.glass-panel {
+  background: rgba(10, 15, 30, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.5);
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.02);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #02040a;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-premium);
+}
+
+/* Glow Utilities */
+.glow-text-gold {
+  text-shadow: 0 0 12px rgba(229, 184, 66, 0.4);
+}
+
+.glow-text-neon {
+  text-shadow: 0 0 12px rgba(0, 255, 135, 0.5);
+}
+
+/* Micro-animations */
+@keyframes grid-glow {
+  0%, 100% {
+    opacity: 0.15;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.grid-glow-bg {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: center center;
+  mask-image: radial-gradient(circle at 50% 50%, black, transparent 80%);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, black, transparent 80%);
+  animation: grid-glow 4s infinite ease-in-out;
+}
