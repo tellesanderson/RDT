@@ -61,11 +61,29 @@ rawWorldCupData.matches.forEach((rawMatch) => {
   }
 });
 
-// 2. Convert roundsMap to an array of Round
-const rounds: Round[] = Object.keys(roundsMap).map((name) => ({
-  name,
-  matches: roundsMap[name]
-}));
+// 2. Convert roundsMap to an array of Round sorted chronologically
+const getRoundOrder = (name: string): number => {
+  if (name.startsWith("Rodada ")) {
+    const num = parseInt(name.replace("Rodada ", ""), 10);
+    return isNaN(num) ? 999 : num;
+  }
+  switch (name) {
+    case "Dezesseis-avos de Final": return 100;
+    case "Oitavas de Final": return 101;
+    case "Quartas de Final": return 102;
+    case "Semifinal": return 103;
+    case "Disputa do 3º Lugar": return 104;
+    case "Final": return 105;
+    default: return 999;
+  }
+};
+
+const rounds: Round[] = Object.keys(roundsMap)
+  .map((name) => ({
+    name,
+    matches: roundsMap[name]
+  }))
+  .sort((a, b) => getRoundOrder(a.name) - getRoundOrder(b.name));
 
 export const mockWorldCupData: WorldCupData = {
   name: "Copa do Mundo FIFA 2026",
